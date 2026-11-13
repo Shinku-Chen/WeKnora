@@ -330,7 +330,10 @@ type ManualKnowledgeMetadata struct {
 
 // ManualKnowledgePayload represents the payload for manual knowledge operations.
 type ManualKnowledgePayload struct {
+	// Native parent identity within the same knowledge base.
 	ParentKnowledgeID string `json:"parent_knowledge_id,omitempty"`
+	// Optional flat user attributes, saved on manual creation.
+	CustomMetadata json.RawMessage `json:"custom_metadata,omitempty"`
 	// Document title.
 	Title string `json:"title" extensions:"x-agent"`
 	// Markdown content. The assistant may send a full document; the API limit

@@ -32917,6 +32917,14 @@ const docTemplate = `{
         "github_com_Tencent_WeKnora_internal_types.ManualKnowledgePayload": {
             "type": "object",
             "properties": {
+                "parent_knowledge_id": {
+                    "description": "Native parent identity within the same knowledge base.",
+                    "type": "string"
+                },
+                "custom_metadata": {
+                    "description": "Optional flat user attributes, saved on manual creation.",
+                    "type": "object"
+                },
                 "channel": {
                     "type": "string"
                 },
