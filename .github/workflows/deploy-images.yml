@@ -24,6 +24,8 @@ jobs:
       - id: vars
         run: |
           echo "tag=deploy-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          owner="${{ github.repository_owner }}"
+          echo "owner=${owner,,}" >> "$GITHUB_OUTPUT"
           echo "build_time=$(date -u +%FT%TZ)" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
@@ -37,7 +39,7 @@ jobs:
           file: ./frontend/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/weknora-ui:${{ steps.vars.outputs.tag }}
+          tags: ${{ env.REGISTRY }}/${{ steps.vars.outputs.owner }}/weknora-ui:${{ steps.vars.outputs.tag }}
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -54,6 +56,8 @@ jobs:
       - id: vars
         run: |
           echo "tag=deploy-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          owner="${{ github.repository_owner }}"
+          echo "owner=${owner,,}" >> "$GITHUB_OUTPUT"
           echo "build_time=$(date -u +%FT%TZ)" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
@@ -67,7 +71,7 @@ jobs:
           file: ./docker/Dockerfile.app
           platforms: linux/amd64
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/weknora-app:${{ steps.vars.outputs.tag }}
+          tags: ${{ env.REGISTRY }}/${{ steps.vars.outputs.owner }}/weknora-app:${{ steps.vars.outputs.tag }}
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -87,6 +91,8 @@ jobs:
       - id: vars
         run: |
           echo "tag=deploy-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          owner="${{ github.repository_owner }}"
+          echo "owner=${owner,,}" >> "$GITHUB_OUTPUT"
           echo "build_time=$(date -u +%FT%TZ)" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
@@ -100,7 +106,7 @@ jobs:
           file: ./docker/Dockerfile.docreader
           platforms: linux/amd64
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/weknora-docreader:${{ steps.vars.outputs.tag }}
+          tags: ${{ env.REGISTRY }}/${{ steps.vars.outputs.owner }}/weknora-docreader:${{ steps.vars.outputs.tag }}
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
@@ -116,7 +122,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - id: vars
-        run: echo "tag=deploy-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "tag=deploy-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          owner="${{ github.repository_owner }}"
+          echo "owner=${owner,,}" >> "$GITHUB_OUTPUT"
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
         with:
@@ -129,7 +138,7 @@ jobs:
           file: ./deployment/tapsvc/neo4j/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/weknora-neo4j:${{ steps.vars.outputs.tag }}
+          tags: ${{ env.REGISTRY }}/${{ steps.vars.outputs.owner }}/weknora-neo4j:${{ steps.vars.outputs.tag }}
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
