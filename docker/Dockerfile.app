@@ -84,6 +84,12 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
         ./scripts/build-anydoc-lib.sh; \
     fi
 
+# Go cgo security checks reject LLVM metadata in Rust static archives.
+# Strip the metadata only; keep native object code and normal linker checks.
+RUN if [ "$WITH_ANYDOC" = "1" ]; then \
+        objcopy --remove-section='.llvm*' "third_party/anydoc-go/lib/linux_$(go env GOARCH)_gnu/libanydoc_go.a"; \
+    fi
+
 # Build the application with version info. Mount the Go build cache as well as
 # the module cache: `COPY . .` invalidates this layer on every source change,
 # and without the mount each rebuild regenerates the whole compile cache inside
